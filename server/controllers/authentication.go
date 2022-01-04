@@ -37,7 +37,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(map[string]string{
-			"message": "something wrong with our json",
+			"message": "something wrong",
 		})
 		return
 	}

@@ -23,7 +23,11 @@ func main() {
 
 	router := mux.NewRouter()
 
-	database.Connect()
+	err := database.Connect()
+	if err != nil {
+		panic("Could not connect to database")
+	}
+
 	routes.Setup(router)
 
 	log.Println("Server starting on :" + PORT)
