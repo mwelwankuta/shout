@@ -1,2 +1,4 @@
 /gotut.exe
-/Vscode*
+/go.sum
+/.vscode
+/.env
