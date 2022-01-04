@@ -4,16 +4,10 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/mwelwankuta/gotut/database"
 	"github.com/mwelwankuta/gotut/models"
 	"golang.org/x/crypto/bcrypt"
 )
-
-type Claims struct {
-	Id uint
-	jwt.StandardClaims
-}
 
 func Register(w http.ResponseWriter, r *http.Request) {
 	var data map[string]string
@@ -68,5 +62,20 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// expiry := time.Now().Add(time.Hour * 24).Unix()
+
+	// token, err := utils.GenerateToken(user.Id, expiry)
+
+	// if err != nil {
+
+	// 	log.Println(err)
+	// 	w.WriteHeader(http.StatusUnauthorized)
+	// 	json.NewEncoder(w).Encode(map[string]string{
+	// 		"message": "invalid token",
+	// 	})
+	// 	return
+	// }
+
 	json.NewEncoder(w).Encode(user)
+
 }

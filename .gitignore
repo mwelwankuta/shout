@@ -1,4 +1,6 @@
-/gotut.exe
-/go.sum
-/.vscode
-/.env
+/server/gotut.exe
+/server/go.sum
+/server/.vscode
+/server/.env
+
+/client/node_modules

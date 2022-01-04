@@ -1,0 +1,28 @@
+{
+  "name": "shout-client",
+  "version": "1.0.0",
+  "description": "react frontend for shout ",
+  "main": "index.js",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "eject": "react-scripts eject"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@chakra-ui/react": "^1.7.3",
+    "axios": "^0.24.0",
+    "formik": "^2.2.9",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-modal": "^3.14.4",
+    "react-router-dom": "^5.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.38",
+    "@types/react-dom": "^17.0.11",
+    "@types/react-modal": "^3.13.1",
+    "@types/react-router-dom": "^5.3.2"
+  }
+}
