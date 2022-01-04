@@ -3,5 +3,6 @@ a go and react app
 
 ## client
 
-### TOdo
+### Todo
 - [ ] install react scripts with `npm install react-scripts`
+- [ ] fix database integration with routes 

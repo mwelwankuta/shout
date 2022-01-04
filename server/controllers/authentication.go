@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/mwelwankuta/gotut/database"
-	"github.com/mwelwankuta/gotut/models"
+	"github.com/mwelwankuta/shout/server/database"
+	"github.com/mwelwankuta/shout/server/models"
 	"golang.org/x/crypto/bcrypt"
 )
 

@@ -3,19 +3,29 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
-	"github.com/mwelwankuta/gotut/database"
-	"github.com/mwelwankuta/gotut/routes"
+	"github.com/joho/godotenv"
+	"github.com/mwelwankuta/shout/server/database"
+	"github.com/mwelwankuta/shout/server/routes"
 )
 
 func main() {
+	godotenv.Load("./.env")
+	env := os.Getenv("PORT")
+
+	var PORT string = "8080"
+
+	if len(env) > 0 {
+		PORT = env
+	}
 
 	router := mux.NewRouter()
 
 	database.Connect()
 	routes.Setup(router)
 
-	log.Println("Server starting on :8080")
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Println("Server starting on :" + PORT)
+	log.Fatal(http.ListenAndServe(":"+PORT, router))
 }

@@ -1,6 +1,6 @@
 /server/gotut.exe
 /server/go.sum
-/server/.vscode
+.vscode
 /server/.env
 
 /client/node_modules
