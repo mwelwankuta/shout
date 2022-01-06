@@ -1,12 +1,13 @@
 # Learning Go 
 learning go by building a rest api
 
-[x] Testing (basics)
+- [x] Testing (basics)
 
-[x] Mux Router
+- [x] Mux Router
 
-[ ] File Uploads
+- [ ] File Uploads 
+file names
 
-[ ] Statuc Files
+- [ ] Statuc Files
 
-[X] Databases with an Orm (sql)
+- [X] Databases with an Orm (sql)
