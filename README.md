@@ -1,8 +1,7 @@
-# shout
-a go and react app 
+# Learning Go 
 
-## client
-
-### Todo
-- [ ] install react scripts with `npm install react-scripts`
-- [ ] fix database integration with routes 
+[x] Testing (basics)
+[x] Mux Router
+[ ] File Uploads
+[ ] Statuc Files
+[X] Databases with an Orm (sql)

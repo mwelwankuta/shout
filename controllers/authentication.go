@@ -2,10 +2,13 @@ package controllers
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
+	"time"
 
-	"github.com/mwelwankuta/shout/server/database"
-	"github.com/mwelwankuta/shout/server/models"
+	"github.com/mwelwankuta/shout/database"
+	"github.com/mwelwankuta/shout/models"
+	"github.com/mwelwankuta/shout/utils"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -44,7 +47,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	var user models.User
 
-	database.DB.Where("email = ?", data["email"]).First(&user)
+	database.DB.First(&user, "email=?", data["email"])
 
 	if user.Id == 0 {
 		w.WriteHeader(http.StatusNotFound)
@@ -62,20 +65,22 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// expiry := time.Now().Add(time.Hour * 24).Unix()
+	expiry := time.Now().Add(time.Hour * 24).Unix()
 
-	// token, err := utils.GenerateToken(user.Id, expiry)
+	token, err := utils.GenerateToken(user.Id, expiry)
 
-	// if err != nil {
+	if err != nil {
+		log.Println(err)
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(map[string]string{
+			"message": "invalid token",
+		})
+		return
+	}
 
-	// 	log.Println(err)
-	// 	w.WriteHeader(http.StatusUnauthorized)
-	// 	json.NewEncoder(w).Encode(map[string]string{
-	// 		"message": "invalid token",
-	// 	})
-	// 	return
-	// }
-
-	json.NewEncoder(w).Encode(user)
+	json.NewEncoder(w).Encode(map[string]string{
+		"token": token,
+		"user":  user.Email,
+	})
 
 }

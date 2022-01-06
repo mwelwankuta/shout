@@ -4,7 +4,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/mwelwankuta/shout/server/database"
+	"github.com/mwelwankuta/shout/database"
 )
 
 func TestHome(t *testing.T) {

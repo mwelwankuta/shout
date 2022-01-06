@@ -7,12 +7,12 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
-	"github.com/mwelwankuta/shout/server/database"
-	"github.com/mwelwankuta/shout/server/routes"
+	"github.com/mwelwankuta/shout/database"
+	"github.com/mwelwankuta/shout/routes"
 )
 
 func main() {
-	godotenv.Load("./.env")
+	godotenv.Load()
 	env := os.Getenv("PORT")
 
 	var PORT string = "8080"

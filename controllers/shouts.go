@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/mwelwankuta/shout/server/database"
-	"github.com/mwelwankuta/shout/server/models"
+	"github.com/mwelwankuta/shout/database"
+	"github.com/mwelwankuta/shout/models"
 )
 
 type PostSuccess struct {
@@ -18,19 +18,21 @@ type LikeType struct {
 	UserId uint `json:"userid"`
 }
 
+// get all posts
 func Home(w http.ResponseWriter, r *http.Request) {
-	var posts models.Post
+	var posts []models.Post
 
-	database.DB.Find(&posts)
+	database.DB.Find(&models.Post{}).Order("id RAND()")
+
 	json.NewEncoder(w).Encode(posts)
 }
 
+// creat a post
 func Post(w http.ResponseWriter, r *http.Request) {
 	var data map[string]string
 
 	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode("")
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
@@ -48,12 +50,12 @@ func Post(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// like post
 func Like(w http.ResponseWriter, r *http.Request) {
 	var data LikeType
 
 	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode("")
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
@@ -70,6 +72,7 @@ func Like(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// create comment
 func Comment(w http.ResponseWriter, r *http.Request) {
 	var comment models.Comment
 
@@ -79,23 +82,37 @@ func Comment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var comments []models.Comment
+	var postComment models.Comment
+	database.DB.First(&postComment, "post_id=?", comment.PostId)
 
-	database.DB.Where("id = ?", comment.PostId).First(&comments)
+	var postComments []models.Comment
+	database.DB.Find(&postComments, "post_id=?", comment.PostId)
 
-	database.DB.Where("id = ?", comment.PostId).Update("comments", append(comments, comment))
+	// combine request comment to database comments
+	postComments = append(postComments, comment)
+
+	database.DB.Model(&postComment).Select("comments").Updates(postComments)
 
 	json.NewEncoder(w).Encode(map[string]string{
-		"message": "post created",
+		"message": "created created",
 	})
 }
 
+// delete post
 func Delete(w http.ResponseWriter, r *http.Request) {
-	var post map[string]string
+	var post models.Post
 
-	json.NewDecoder(r.Body).Decode(&post)
+	if err := json.NewDecoder(r.Body).Decode(&post); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 
-	database.DB.Where("id = ?", post["id"]).Delete(&post)
+	result := database.DB.Delete(&post)
+	if result.RowsAffected == 0 {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("There was a problem deleting the post"))
+		return
+	}
 
 	json.NewEncoder(w).Encode(map[string]string{
 		"message": "deleted post",

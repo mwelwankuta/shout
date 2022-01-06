@@ -1,5 +1,7 @@
 package models
 
+import "gorm.io/gorm"
+
 type Comment struct {
 	Id     uint
 	PostId string `json:"post_id"`
@@ -8,7 +10,8 @@ type Comment struct {
 }
 
 type Post struct {
-	Id       uint
+	gorm.Model
+	Id       uint `json:"id"`
 	Text     string
 	Author   string
 	Comments []Comment `gorm:"default=[]"`

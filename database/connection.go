@@ -3,7 +3,7 @@ package database
 import (
 	"log"
 
-	"github.com/mwelwankuta/shout/server/models"
+	"github.com/mwelwankuta/shout/models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
