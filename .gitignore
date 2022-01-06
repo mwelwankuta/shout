@@ -1,6 +1,6 @@
 /gotut.exe
 /go.sum
-.vscode
+/.vscode
 /.env
 
 /node_modules

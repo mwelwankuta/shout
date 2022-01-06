@@ -1,4 +1,4 @@
-module github.com/mwelwankuta/shout/server
+module github.com/mwelwankuta/shout
 
 go 1.17
 
