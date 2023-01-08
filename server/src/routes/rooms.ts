@@ -1,8 +1,8 @@
 import { IRouter, Router } from "express";
-import { loginController } from "../controllers/authentication";
+import { roomsController } from "../controllers/rooms";
 
 const rooms: IRouter = Router();
 
-rooms.get("/", loginController);
+rooms.get("/", roomsController);
 
 export default rooms;
