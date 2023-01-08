@@ -2,26 +2,12 @@ import { Schema, model } from "mongoose";
 
 const User = new Schema(
   {
-    username: {
-      type: String,
-      default: "",
-    },
-    display_name: {
-      type: String,
-      default: "",
-    },
-    email: {
-      type: String,
-      default: "",
-    },
-    password: {
-      type: String,
-      default: "",
-    },
-    avatar: {
-      type: String,
-      default: "",
-    },
+    username: String,
+    display_name: String,
+    email: String,
+    password: String,
+    avatar: String,
+    facebook: String,
   },
   {
     timestamps: true,

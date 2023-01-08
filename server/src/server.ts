@@ -1,55 +1,39 @@
 import express, { Application, Response, json } from "express";
-import dotenv from "dotenv";
 import cors from "cors";
 import mongoose from "mongoose";
 import http from "http";
 import morgan from "morgan";
-import socketIO, { Socket } from "socket.io";
-
-// configure env
-const environment = process.env.NODE_ENV || "development";
-dotenv.config({ path: `.env.${environment}` });
+import socketIO from "socket.io";
+import config from "./config";
 
 import { authentication, rooms } from "./routes";
 import { checkAuthentication } from "./helper";
 import { User } from "./models";
 import { AuthenticatedRequest } from "./types";
 
-const DATABASE_URI = process.env.DATABASE_URI;
-
 mongoose.set("strictQuery", false);
-mongoose.connect(DATABASE_URI);
+mongoose.connect(config.DATABASE_URI);
 
 mongoose.connection.on("connect", () => {
   console.log("Database Connected...");
-  startSocketServer();
+  startServer();
 });
 
 mongoose.connection.once("error", (err) => {
-  console.log(`Could Not Connect to Database... \n ${err}`);
+  console.log(`Could Not Connect to Database...`);
+  throw new Error(err);
 });
 
-async function startSocketServer() {
-  const app = express();
-  const server = http.createServer(app);
+const app: Application = express();
+const server = http.createServer(app);
 
-  setUpApp(app);
-
-  const PORT = process.env.PORT;
-  server.listen(PORT, () => console.log("running on port " + PORT));
-
-  // @ts-ignore
-  const io = socketIO(server);
-
-  io.on("connection", (socket: Socket) => {
-    socket.emit("hello this message came from the server");
-  });
-}
+// @ts-ignore
+const io = socketIO(server);
 
 /**
  * starts the express server after the database connects
  */
-async function setUpApp(app: Application) {
+async function startServer() {
   // global middleware
   app.use(
     morgan(":method :url :status :res[content-length] - :response-time ms")
@@ -60,7 +44,7 @@ async function setUpApp(app: Application) {
   // routes
   app.use("/auth", authentication);
   app.get(
-    "/auth/user",
+    "/user",
     checkAuthentication,
     async (req: AuthenticatedRequest, res: Response) => {
       const user = await User.findOne({ _id: req.user });
@@ -68,4 +52,10 @@ async function setUpApp(app: Application) {
     }
   );
   app.use("/rooms", checkAuthentication, rooms);
+
+  server.listen(config.PORT, () =>
+    console.log("running on port " + config.PORT)
+  );
 }
+
+export { io as IO };
